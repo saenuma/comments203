@@ -14,16 +14,24 @@ const (
 	canvasWidth      = 1200
 	canvasHeight     = 600
 
-	PencilWidget        = 101
-	CanvasWidget        = 102
-	SymmLineWidget      = 103
-	LeftSymmWidget      = 104
-	RefLineWidget       = 105
-	ClearRefLinesWidget = 106
-	SaveWidget          = 107
-	OpenWDWidget        = 108
+	SelectImageTool = 101
+	AddCommentTool = 102
+	DeleteCommentTool = 103
+	SaveWorkTool = 104
+	OpenFolderTool = 105
+	CanvasWidget = 106
 )
 
 // var objCoords map[g143.Rect]any
 var objCoords map[int]g143.Rect
 var currentWindowFrame image.Image
+
+type CircleSpec struct {
+	X int
+	Y int
+}
+
+var drawnIndicators []CircleSpec
+var activeTool int
+var currentWorkingImagePath string
+var canvasRect g143.Rect
