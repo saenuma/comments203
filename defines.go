@@ -36,6 +36,10 @@ type Comment struct {
 	Comment string
 }
 
+func (obj *Comment) getRect() g143.Rect {
+	return g143.Rect{OriginX: obj.X, OriginY: obj.Y, Width: 80, Height: 40}
+}
+
 var (
 	objCoords map[int]g143.Rect
 	CDObjCoords map[int]g143.Rect

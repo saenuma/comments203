@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"strings"
 	"fmt"
-
+	"slices"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/fogleman/gg"
@@ -125,12 +125,17 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 
 		} else if activeTool == DeleteCommentTool {
 
+			for i, obj := range comments {
+				if g143.InRect(obj.getRect(), xPosInt, yPosInt) {
+					comments = slices.Delete(comments, i, i+1)
+				}
+			}
 
-
+			drawMainWindow(window)
 		}
 
 	case SaveWorkTool:
-
+		
 
 	case OpenFolderTool:
 		exec.Command("xdg-open", rootPath).Run()
