@@ -73,7 +73,7 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 
 		theCtx := Continue2dCtx(currentWindowFrame, &objCoords)
 
-		theCtx.ggCtx.SetHexColor("#ddd")
+		theCtx.ggCtx.SetHexColor("#fff")
 		theCtx.ggCtx.DrawRectangle(220, 0, float64(wWidth), float64(wHeight))
 		theCtx.ggCtx.Fill()
 

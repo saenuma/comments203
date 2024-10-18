@@ -120,7 +120,7 @@ func (ctx *Ctx) drawCommentBox(inputId, originX, originY int) g143.Rect {
 	cBRect := g143.Rect{Width: 80, Height: 40, OriginX: originX, OriginY: originY}
 	(*ctx.ObjCoords)[inputId] = cBRect
 
-	idToDisplay := inputId - 1000 - 1
+	idToDisplay := inputId - 1000
 	ctx.ggCtx.SetHexColor("#fff")
 	ctx.ggCtx.DrawString(fmt.Sprintf("#%d", idToDisplay), float64(originX)+10, float64(originY)+FontSize)
 

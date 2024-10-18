@@ -7,6 +7,9 @@ import (
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/disintegration/imaging"
+	"image/draw"
+	"image/color"
+	"image"
 )
 
 func main() {
@@ -40,11 +43,6 @@ func drawMainWindow(window *glfw.Window) {
 	wWidth, wHeight := window.GetSize()
 
 	theCtx := New2dCtx(wWidth, wHeight, &objCoords)
-
-	// background rectangle
-	theCtx.ggCtx.DrawRectangle(0, 0, float64(wWidth), float64(wHeight))
-	theCtx.ggCtx.SetHexColor("#ddd")
-	theCtx.ggCtx.Fill()
 
 	// draw tools box
 	theCtx.ggCtx.SetHexColor("#DAC166")
@@ -82,11 +80,18 @@ func drawMainWindow(window *glfw.Window) {
 			img = imaging.Fit(img, int(newWidthF64), newHeight, imaging.Lanczos)
 		}
 
-		theCtx.ggCtx.SetHexColor("#ddd")
+		theCtx.ggCtx.SetHexColor("#fff")
 		theCtx.ggCtx.DrawRectangle(220, 0, float64(wWidth), float64(wHeight))
 		theCtx.ggCtx.Fill()
 
-		theCtx.ggCtx.DrawImage(img, 220, 20)
+		finalDst := image.NewRGBA(theCtx.ggCtx.Image().Bounds())
+		draw.Draw(finalDst, finalDst.Bounds(), theCtx.ggCtx.Image(), image.Point{}, draw.Src)
+		alphaImg := imaging.New(img.Bounds().Dx(), img.Bounds().Dy(), color.Alpha{A: 150})
+
+		draw.DrawMask(finalDst, image.Rect(220, 20, img.Bounds().Dx()+220, img.Bounds().Dy()+20), 
+			img, image.Point{}, alphaImg, image.Point{}, draw.Over)
+
+		theCtx.ggCtx.DrawImage(finalDst, 0, 0)
 
 		canvasRect = g143.NewRect(220, 20, img.Bounds().Dx(), img.Bounds().Dy())
 
@@ -95,7 +100,6 @@ func drawMainWindow(window *glfw.Window) {
 			theCtx.drawCommentBox(inputId, commentObj.X, commentObj.Y)
 		}		
 	}
-
 
 	// send the frame to glfw window
 	g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
