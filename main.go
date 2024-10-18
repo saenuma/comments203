@@ -3,9 +3,10 @@ package main
 import (
 	"runtime"
 	"time"
-
+	"fmt"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/disintegration/imaging"
 )
 
 func main() {
@@ -60,6 +61,40 @@ func drawMainWindow(window *glfw.Window) {
 	sWRect := theCtx.drawButtonA(SaveWorkTool, 20, sWTY, "Save Work", "#444", "#ddd")
 	_, oWDY := nextVerticalCoords(sWRect, 10)
 	theCtx.drawButtonA(OpenFolderTool, 20, oWDY, "Open Folder", "#444", "#ddd")
+
+	if currentWorkingImagePath != "" {
+		img, err := imaging.Open(currentWorkingImagePath)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		availWidth, availHeight := wWidth - 220, wHeight - 100
+		if img.Bounds().Dx() > availWidth {
+			newWidth := availWidth - 100
+			newHeightf64 := (float64(newWidth)/float64(img.Bounds().Dx())) * float64(img.Bounds().Dy())
+			img = imaging.Fit(img, newWidth, int(newHeightf64), imaging.Lanczos)
+		}
+
+		if img.Bounds().Dy() > availHeight {
+			newHeight := availHeight - 100
+			newWidthF64 := (float64(newHeight)/float64(img.Bounds().Dy())) * float64(img.Bounds().Dx())
+			img = imaging.Fit(img, int(newWidthF64), newHeight, imaging.Lanczos)
+		}
+
+		theCtx.ggCtx.SetHexColor("#ddd")
+		theCtx.ggCtx.DrawRectangle(220, 0, float64(wWidth), float64(wHeight))
+		theCtx.ggCtx.Fill()
+
+		theCtx.ggCtx.DrawImage(img, 220, 20)
+
+		canvasRect = g143.NewRect(220, 20, img.Bounds().Dx(), img.Bounds().Dy())
+
+		for i, commentObj := range comments {
+			inputId := 1000 + i + 1
+			theCtx.drawCommentBox(inputId, commentObj.X, commentObj.Y)
+		}		
+	}
 
 
 	// send the frame to glfw window

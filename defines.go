@@ -30,6 +30,11 @@ type CircleSpec struct {
 	Y int
 }
 
+type Comment struct {
+	X int
+	Y int
+	Comment string
+}
 
 var (
 	objCoords map[int]g143.Rect
@@ -47,4 +52,7 @@ var (
 	cursorEventsCount int
 
 	activeX, activeY int
+	enteredTxt string
+	comments []Comment = make([]Comment, 0)
 )
+

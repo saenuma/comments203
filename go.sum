@@ -1,3 +1,5 @@
+github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c h1:XLynE8YGJdvPN65iI+G+Ys5ZUVS6YxWk8WPe/FmBReg=
+github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c/go.mod h1:vX+Cl5GOtK2DkzgsggLoeNUbxAcUWBaybCKzVRYsRMo=
 github.com/bankole7782/graphics143 v1.2.1 h1:dfmOVKOWo4mLn8d6LsLOOhMCk8jOXRPSBeGmH6XjsvA=
 github.com/bankole7782/graphics143 v1.2.1/go.mod h1:l+0N6Eufeg5lqLhzFut37FXiyR/kQJ5nVQiGa9Evzn8=
 github.com/disintegration/imaging v1.6.2 h1:w1LecBlG2Lnp8B3jk5zSuNqd7b4DXhcjwek1ei82L+c=

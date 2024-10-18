@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"strings"
 	"fmt"
-	
+
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/fogleman/gg"
@@ -118,8 +118,10 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 		if activeTool == AddCommentTool {
 			activeX, activeY = xPosInt, yPosInt
 			drawCommentDialog(window, currentWindowFrame)
-			window.SetMouseButtonCallback(nil)
+			window.SetMouseButtonCallback(CDMouseBtnCallback)
 			window.SetCursorPosCallback(getHoverCB(CDObjCoords))
+			window.SetKeyCallback(CDKeyCallback)
+			window.SetCharCallback(CDCharCallback)
 
 		} else if activeTool == DeleteCommentTool {
 
@@ -136,4 +138,61 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 	default:
 
 	}
+}
+
+
+func CDMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Release {
+		return
+	}
+
+	xPos, yPos := window.GetCursorPos()
+	xPosInt, yPosInt := int(xPos), int(yPos)
+
+	// wWidth, wHeight := window.GetSize()
+
+	// var widgetRS g143.Rect
+	var widgetCode int
+
+	for code, RS := range CDObjCoords {
+		if g143.InRect(RS, xPosInt, yPosInt) {
+			// widgetRS = RS
+			widgetCode = code
+			break
+		}
+	}
+
+	switch widgetCode {
+	case CD_CloseBtn:
+		drawMainWindow(window)
+		// register the ViewMain mouse callback
+		window.SetMouseButtonCallback(mouseBtnCallback)
+		// unregister the keyCallback
+		window.SetKeyCallback(nil)
+		window.SetCharCallback(nil)
+		// window.SetScrollCallback(FirstUIScrollCallback)
+		window.SetCursorPosCallback(getHoverCB(objCoords))
+
+		activeX, activeY = -1, -1
+
+	case CD_AddBtn:
+		if enteredTxt == "" {
+			return
+		}
+
+		comments = append(comments, Comment{activeX, activeY, enteredTxt})
+		enteredTxt = ""
+
+		drawMainWindow(window)
+		// register the ViewMain mouse callback
+		window.SetMouseButtonCallback(mouseBtnCallback)
+		// unregister the keyCallback
+		window.SetKeyCallback(nil)
+		window.SetCharCallback(nil)
+		// window.SetScrollCallback(FirstUIScrollCallback)
+		window.SetCursorPosCallback(getHoverCB(objCoords))
+
+		activeX, activeY = -1, -1
+	}
+
 }

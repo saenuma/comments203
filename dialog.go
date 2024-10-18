@@ -33,7 +33,7 @@ func drawCommentDialog(window *glfw.Window, currentFrame image.Image) {
 	// Add Form
 	aFLX, aFLY := dialogOriginX+20, dialogOriginY+20
 	theCtx.ggCtx.SetHexColor("#444")
-	str1 := fmt.Sprintf("Add Comment #%d", commentsCount+1)
+	str1 := fmt.Sprintf("Add Comment #%d", len(comments)+1)
 	if isUpdateDialog {
 		str1 = "Edit Comment"
 	}

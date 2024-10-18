@@ -2,10 +2,11 @@ package main
 
 import (
 	"image"
-
+	"fmt"
 	"strings"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/fogleman/gg"
+	"github.com/AvraamMavridis/randomcolor"
 )
 
 type Ctx struct {
@@ -108,6 +109,22 @@ func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int,
 		}
 	}
 	return entryRect
+}
+
+func (ctx *Ctx) drawCommentBox(inputId, originX, originY int) g143.Rect {
+	colorInHex := randomcolor.GetRandomColorInHex()
+	ctx.ggCtx.SetHexColor(colorInHex)
+	ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), 80, 40)
+	ctx.ggCtx.Fill()
+
+	cBRect := g143.Rect{Width: 80, Height: 40, OriginX: originX, OriginY: originY}
+	(*ctx.ObjCoords)[inputId] = cBRect
+
+	idToDisplay := inputId - 1000 - 1
+	ctx.ggCtx.SetHexColor("#fff")
+	ctx.ggCtx.DrawString(fmt.Sprintf("#%d", idToDisplay), float64(originX)+10, float64(originY)+FontSize)
+
+	return cBRect
 }
 
 func (ctx *Ctx) windowRect() g143.Rect {
