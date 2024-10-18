@@ -6,8 +6,7 @@ import (
 )
 
 const (
-	fps              = 10
-	fontSize         = 20
+	FontSize         = 20
 	toolBoxW         = 170
 	toolBoxH         = 40
 	indicatorCircleR = 8
@@ -20,18 +19,32 @@ const (
 	SaveWorkTool = 104
 	OpenFolderTool = 105
 	CanvasWidget = 106
-)
 
-// var objCoords map[g143.Rect]any
-var objCoords map[int]g143.Rect
-var currentWindowFrame image.Image
+	CD_AddBtn = 107
+	CD_CloseBtn = 108
+	CD_CommentInput = 109
+)
 
 type CircleSpec struct {
 	X int
 	Y int
 }
 
-var drawnIndicators []CircleSpec
-var activeTool int
-var currentWorkingImagePath string
-var canvasRect g143.Rect
+
+var (
+	objCoords map[int]g143.Rect
+	CDObjCoords map[int]g143.Rect
+	currentWindowFrame image.Image
+
+
+	drawnIndicators []CircleSpec
+	activeTool int
+	currentWorkingImagePath string
+	canvasRect g143.Rect
+	commentsCount int	
+
+	isUpdateDialog bool
+	cursorEventsCount int
+
+	activeX, activeY int
+)
