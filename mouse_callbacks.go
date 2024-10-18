@@ -4,12 +4,18 @@ import (
 	"os/exec"
 	"strings"
 	"fmt"
+	"os"
+	"path/filepath"
 	"slices"
+	"encoding/json"
+	"context"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/fogleman/gg"
 	"github.com/disintegration/imaging"
+	"github.com/mholt/archiver/v4"
 )
+
 
 
 func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
@@ -135,7 +141,52 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 		}
 
 	case SaveWorkTool:
-		
+		if currentWorkingImagePath == "" {
+			return
+		}
+
+		imgPath := filepath.Join(os.TempDir(), "img."+filepath.Ext(currentWorkingImagePath))
+		rawImg, _ := os.ReadFile(currentWorkingImagePath)
+		os.WriteFile(imgPath, rawImg, 0777)
+
+		rawJSON, _ := json.Marshal(comments)
+		jsonPath := filepath.Join(os.TempDir(), "comments.json")
+		os.WriteFile(jsonPath, rawJSON, 0777)
+
+		// make archive
+		files, _ := archiver.FilesFromDisk(nil, map[string]string{
+			imgPath: "", jsonPath: "",
+		})
+
+		firstOutput := filepath.Join(os.TempDir(), "out.tar.gz")
+		os.Remove(firstOutput)
+		// create the output file we'll write to
+		out, err := os.Create(firstOutput)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer out.Close()
+
+		// we can use the CompressedArchive type to gzip a tarball
+		// (compression is not required; you could use Tar directly)
+		format := archiver.CompressedArchive{
+			Compression: archiver.Gz{},
+			Archival:    archiver.Tar{},
+		}
+
+		// create the archive
+		err = format.Archive(context.Background(), out, files)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		// rename extension
+		rawArch, _ := os.ReadFile(firstOutput)
+		rootPath, _ := GetRootPath()
+		finalArchive := filepath.Join(rootPath, UntestedRandomString(7) + ".c203f")
+		os.WriteFile(finalArchive, rawArch, 0777)
+
 
 	case OpenFolderTool:
 		exec.Command("xdg-open", rootPath).Run()
