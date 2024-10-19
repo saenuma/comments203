@@ -37,10 +37,7 @@ func main() {
 			if strings.HasSuffix(f, ".json") {
 				rawJSON, _ := os.ReadFile(filepath.Join(workingPath, f))
 				var objs []Comment
-				err = json.Unmarshal(rawJSON, &objs)
-				// if err != nil {
-					// log.Fatal(err)
-				// }
+				json.Unmarshal(rawJSON, &objs)
 
 				comments = objs
 			} else {
