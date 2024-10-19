@@ -44,6 +44,7 @@ var (
 	objCoords map[int]g143.Rect
 	CDObjCoords map[int]g143.Rect
 	currentWindowFrame image.Image
+	toClearTmp string
 
 	drawnIndicators []CircleSpec
 	activeTool int

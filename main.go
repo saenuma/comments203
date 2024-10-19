@@ -29,7 +29,9 @@ func main() {
 			os.Exit(1)
 		}
 
-		workingPath := filepath.Join(rootPath, "current")
+		workingPath := filepath.Join(rootPath, ".tmp", UntestedRandomString(3))
+		toClearTmp := workingPath
+
 		files := unpackTar(os.Args[1], workingPath)
 		for _, f := range files {
 			if strings.HasSuffix(f, ".json") {
@@ -56,6 +58,8 @@ func main() {
 	window.SetMouseButtonCallback(mouseBtnCallback)
 	// quick hover effect
 	window.SetCursorPosCallback(getHoverCB(objCoords))
+	// clear tmp on close
+	window.SetCloseCallback(CloseCallback)
 
 	for !window.ShouldClose() {
 		t := time.Now()
@@ -138,3 +142,10 @@ func drawMainWindow(window *glfw.Window) {
 	currentWindowFrame = theCtx.ggCtx.Image()
 }
 
+
+// clear temporary files
+func CloseCallback(w *glfw.Window) {
+	if toClearTmp != "" {
+		os.RemoveAll(toClearTmp)
+	}
+}
