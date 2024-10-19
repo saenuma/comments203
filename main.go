@@ -93,6 +93,25 @@ func drawMainWindow(window *glfw.Window) {
 	_, oWDY := nextVerticalCoords(sWRect, 10)
 	theCtx.drawButtonA(OpenFolderTool, 20, oWDY, "Open Folder", "#444", "#ddd")
 
+	// active tool indicator
+
+	// clear indicators
+	for _, cs := range drawnIndicators {
+		theCtx.ggCtx.SetHexColor("#dddddd")
+		theCtx.ggCtx.DrawCircle(float64(cs.X), float64(cs.Y), indicatorCircleR+2)
+		theCtx.ggCtx.Fill()
+	}
+
+	if activeTool != 0 {
+		// draw an indicator on the active tool
+		theCtx.ggCtx.SetHexColor("#DAC166")
+		widgetRS := objCoords[activeTool]
+		theCtx.ggCtx.DrawCircle(float64(widgetRS.OriginX+widgetRS.Width-20), float64(widgetRS.OriginY+20), 10)
+		theCtx.ggCtx.Fill()
+		drawnIndicators = append(drawnIndicators, CircleSpec{X: widgetRS.OriginX + widgetRS.Width - 20, Y: widgetRS.OriginY + 20})		
+	}	
+
+
 	if currentWorkingImagePath != "" {
 		img, err := imaging.Open(currentWorkingImagePath)
 		if err != nil {
