@@ -3,7 +3,8 @@ package main
 import (
 	"image"
 	"runtime"
-
+	"fmt"
+	"strings"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/fogleman/gg"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -54,6 +55,36 @@ func getHoverCB(state map[int]g143.Rect) glfw.CursorPosCallback {
 
 		ggCtx := gg.NewContextForImage(currentWindowFrame)
 		ggCtx.DrawImage(invertedPiece, widgetRS.OriginX, widgetRS.OriginY)
+
+		// show comments
+		if widgetCode > 1000 && widgetCode < 2000 {
+			instrId := widgetCode - 1000 - 1
+			commentObj := comments[instrId]
+			cORect := objCoords[widgetCode]
+			ggCtx.SetHexColor("#888")
+			ggCtx.DrawRoundedRectangle(float64(cORect.OriginX)+10, float64(cORect.OriginY)+10, 300, 200, 10)
+			ggCtx.Fill()
+
+			// load font
+			fontPath := getDefaultFontPath()
+			ggCtx.LoadFontFace(fontPath, 20)
+
+			// header
+			cHLY := cORect.OriginY+10+10
+
+			ggCtx.SetHexColor("#fff")
+			ggCtx.DrawString(fmt.Sprintf("Comment #%d", instrId+1), float64(cORect.OriginX)+10+20, 
+				float64(cHLY)+FontSize)
+
+			strs := strings.Split(commentObj.Comment, "\n")
+			currentY := cHLY + 25
+			for _, str := range strs {
+				ggCtx.SetHexColor("#fff")
+				ggCtx.DrawString(str, float64(cORect.OriginX)+10+20, float64(currentY)+10+20+FontSize)
+				currentY += FontSize + 5
+			}
+
+		}
 
 		// send the frame to glfw window
 		windowRS := g143.Rect{Width: wWidth, Height: wHeight, OriginX: 0, OriginY: 0}

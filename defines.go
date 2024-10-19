@@ -45,12 +45,10 @@ var (
 	CDObjCoords map[int]g143.Rect
 	currentWindowFrame image.Image
 
-
 	drawnIndicators []CircleSpec
 	activeTool int
 	currentWorkingImagePath string
 	canvasRect g143.Rect
-	commentsCount int	
 
 	isUpdateDialog bool
 	cursorEventsCount int

@@ -14,7 +14,7 @@ import (
 	"strings"
 	"path/filepath"
 	"encoding/json"
-	"log"
+	// "log"
 )
 
 func main() {
@@ -33,16 +33,16 @@ func main() {
 		files := unpackTar(os.Args[1], workingPath)
 		for _, f := range files {
 			if strings.HasSuffix(f, ".json") {
-				rawJSON, _ := os.ReadFile(f)
+				rawJSON, _ := os.ReadFile(filepath.Join(workingPath, f))
 				var objs []Comment
 				err = json.Unmarshal(rawJSON, &objs)
-				if err != nil {
-					log.Fatal(err)
-				}
+				// if err != nil {
+					// log.Fatal(err)
+				// }
 
 				comments = objs
 			} else {
-				currentWorkingImagePath = f
+				currentWorkingImagePath = filepath.Join(workingPath, f)
 			}
 		}
 	}
