@@ -23,6 +23,7 @@ func main() {
 		panic(err)
 	}
 
+	progTitle := "comments203: commenting on an image program."
 	if len(os.Args) == 2 {
 		if ! strings.HasSuffix(os.Args[1], ".c203f") {
 			fmt.Println("Invalid file extension.")
@@ -30,7 +31,7 @@ func main() {
 		}
 
 		workingPath := filepath.Join(rootPath, ".tmp", UntestedRandomString(3))
-		toClearTmp := workingPath
+		toClearTmp = workingPath
 
 		files := unpackTar(os.Args[1], workingPath)
 		for _, f := range files {
@@ -44,11 +45,13 @@ func main() {
 				currentWorkingImagePath = filepath.Join(workingPath, f)
 			}
 		}
+
+		progTitle = filepath.Base(os.Args[1]) + " --- " + progTitle
 	}
 
 	runtime.LockOSThread()
 
-	window := g143.NewWindow(1450, 900, "comments203: commenting on an image program.", false)
+	window := g143.NewWindow(1450, 900, progTitle, false)
 	drawMainWindow(window)
 
 	// respond to the mouse
