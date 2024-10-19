@@ -121,6 +121,12 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 	case CanvasWidget:
 		if activeTool == AddCommentTool {
 			
+			for _, obj := range comments {
+				if g143.InRect(obj.getRect(), xPosInt, yPosInt) {
+					return
+				}
+			}
+
 			activeX, activeY = xPosInt, yPosInt
 			drawCommentDialog(window, currentWindowFrame)
 			window.SetMouseButtonCallback(CDMouseBtnCallback)
