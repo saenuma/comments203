@@ -10,6 +10,10 @@ import (
 
 	// "github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/pkg/errors"
+	"bytes"
+	"log"
+	"archive/tar"
+	"io"
 )
 
 
@@ -72,4 +76,65 @@ func pickFileUbuntu(exts string) string {
 	}
 
 	return strings.TrimSpace(string(out))
+}
+
+func writeTar(files []string, outPath string) {
+	// Create and add some files to the archive.
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+
+	for _, f := range files {
+		raw, _ := os.ReadFile(f)
+
+		hdr := &tar.Header{
+			Name: f,
+			Mode: 0600,
+			Size: int64(len(raw)),
+		}
+
+		if err := tw.WriteHeader(hdr); err != nil {
+			log.Fatal(err)
+		}
+		if _, err := tw.Write([]byte(raw)); err != nil {
+			log.Fatal(err)
+		}
+	}
+	if err := tw.Close(); err != nil {
+		log.Fatal(err)
+	}
+
+	os.WriteFile(outPath, buf.Bytes(), 0777)
+}
+
+func unpackTar(inPath, outPath string) []string {
+	raw, _ := os.ReadFile(inPath)
+	buf := bytes.NewBuffer(raw)
+	tr := tar.NewReader(buf)
+
+	os.RemoveAll(outPath)
+	os.MkdirAll(outPath, 0777)
+
+	ret := make([]string, 0)
+	for {
+		hdr, err := tr.Next()
+		if err == io.EOF {
+			break // End of archive
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		fileOutPath := filepath.Join(outPath, hdr.Name)
+		ret = append(ret, hdr.Name)
+		os.MkdirAll(filepath.Dir(fileOutPath), 0777)
+		b, err := io.ReadAll(tr)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = os.WriteFile(fileOutPath, b, 0777)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	return ret
 }

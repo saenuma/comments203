@@ -10,12 +10,41 @@ import (
 	"image/draw"
 	"image/color"
 	"image"
+	"os"
+	"strings"
+	"path/filepath"
+	"encoding/json"
+	"log"
 )
 
 func main() {
-	_, err := GetRootPath()
+	rootPath, err := GetRootPath()
 	if err != nil {
 		panic(err)
+	}
+
+	if len(os.Args) == 2 {
+		if ! strings.HasSuffix(os.Args[1], ".c203f") {
+			fmt.Println("Invalid file extension.")
+			os.Exit(1)
+		}
+
+		workingPath := filepath.Join(rootPath, "current")
+		files := unpackTar(os.Args[1], workingPath)
+		for _, f := range files {
+			if strings.HasSuffix(f, ".json") {
+				rawJSON, _ := os.ReadFile(f)
+				var objs []Comment
+				err = json.Unmarshal(rawJSON, &objs)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				comments = objs
+			} else {
+				currentWorkingImagePath = f
+			}
+		}
 	}
 
 	runtime.LockOSThread()
