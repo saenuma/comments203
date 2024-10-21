@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.0.0
+Type=Application
+Name=Comments203
+Exec=comments203
+Icon=${SNAP}/meta/gui/comments203.png
