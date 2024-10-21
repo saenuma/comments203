@@ -6,7 +6,7 @@ import (
 	"strings"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/fogleman/gg"
-	"github.com/AvraamMavridis/randomcolor"
+	colorful "github.com/lucasb-eyer/go-colorful"
 )
 
 type Ctx struct {
@@ -112,8 +112,7 @@ func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int,
 }
 
 func (ctx *Ctx) drawCommentBox(inputId, originX, originY int) g143.Rect {
-	colorInHex := randomcolor.GetRandomColorInHex()
-	ctx.ggCtx.SetHexColor(colorInHex)
+	ctx.ggCtx.SetColor(colorful.WarmColor())
 	ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), 80, 40)
 	ctx.ggCtx.Fill()
 

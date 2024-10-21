@@ -104,8 +104,8 @@ func unpackTar(inPath, outPath string) []string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fileOutPath := filepath.Join(outPath, hdr.Name)
-		ret = append(ret, hdr.Name)
+		fileOutPath := filepath.Join(outPath, filepath.Base(hdr.Name))
+		ret = append(ret, filepath.Base(hdr.Name))
 		os.MkdirAll(filepath.Dir(fileOutPath), 0777)
 		b, err := io.ReadAll(tr)
 		if err != nil {

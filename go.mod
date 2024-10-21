@@ -3,12 +3,12 @@ module github.com/saenuma/comments203
 go 1.23.2
 
 require (
-	github.com/AvraamMavridis/randomcolor v0.0.0-20180822172341-208aff70bf2c
 	github.com/bankole7782/graphics143 v1.2.2
 	github.com/disintegration/imaging v1.6.2
 	github.com/fogleman/gg v1.3.0
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20240506104042-037f3cc74f2a
 	github.com/kovidgoyal/imaging v1.6.3
+	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/sqweek/dialog v0.0.0-20220809060634-e981b270ebbf
 )
