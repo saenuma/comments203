@@ -19,8 +19,8 @@ func drawCommentDialog(window *glfw.Window, currentFrame image.Image) {
 	theCtx := Continue2dCtx(img, &CDObjCoords)
 
 	// dialog rectangle
-	dialogWidth := 400
-	dialogHeight := 300
+	dialogWidth := 500
+	dialogHeight := 400
 
 	dialogOriginX := (wWidth - dialogWidth) / 2
 	dialogOriginY := (wHeight - dialogHeight) / 2
@@ -46,7 +46,7 @@ func drawCommentDialog(window *glfw.Window, currentFrame image.Image) {
 
 	// draw comment box
 	_, cIY := nextVerticalCoords(addBtnRect, 20)
-	theCtx.drawTextInput(CD_CommentInput, aFLX, cIY, dialogWidth-40, 200, "")
+	theCtx.drawTextInput(CD_CommentInput, aFLX, cIY, dialogWidth-40, 300, "")
 
 	
 	// send the frame to glfw window
