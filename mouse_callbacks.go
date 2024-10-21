@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os/exec"
 	"strings"
 	"fmt"
 	"os"
@@ -49,7 +48,7 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 	rootPath, _ := GetRootPath()
 	switch widgetCode {
 	case SelectImageTool:
-		imagePath := pickFileUbuntu("png|jpg")
+		imagePath := PickImageFile()
 		if strings.TrimSpace(imagePath) == "" {
 			return
 		}
@@ -162,7 +161,7 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 		writeTar([]string{imgPath, jsonPath}, finalArchive)
 
 	case OpenFolderTool:
-		exec.Command("xdg-open", rootPath).Run()
+		ExternalLaunch(rootPath)
 
 	default:
 

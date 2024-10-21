@@ -6,14 +6,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"fmt"
-
-	// "github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/pkg/errors"
 	"bytes"
 	"log"
 	"archive/tar"
 	"io"
+	"runtime"
 )
 
 
@@ -50,32 +48,15 @@ func UntestedRandomString(length int) string {
 }
 
 
-func GetPickerPath() string {
-	homeDir, _ := os.UserHomeDir()
-	var cmdPath string
-	begin := os.Getenv("SNAP")
-	cmdPath = filepath.Join(homeDir, "bin", "fpicker")
-	if begin != "" && !strings.HasPrefix(begin, "/snap/go/") {
-		cmdPath = filepath.Join(begin, "bin", "fpicker")
+func ExternalLaunch(p string) {
+	cmd := "url.dll,FileProtocolHandler"
+	runDll32 := filepath.Join(os.Getenv("SYSTEMROOT"), "System32", "rundll32.exe")
+
+	if runtime.GOOS == "windows" {
+		exec.Command(runDll32, cmd, p).Run()
+	} else if runtime.GOOS == "linux" {
+		exec.Command("xdg-open", p).Run()
 	}
-
-	return cmdPath
-}
-
-
-func pickFileUbuntu(exts string) string {
-	fPickerPath := GetPickerPath()
-
-	rootPath, _ := GetRootPath()
-	cmd := exec.Command(fPickerPath, rootPath, exts)
-
-	out, err := cmd.Output()
-	if err != nil {
-		fmt.Println(err)
-		return ""
-	}
-
-	return strings.TrimSpace(string(out))
 }
 
 func writeTar(files []string, outPath string) {
