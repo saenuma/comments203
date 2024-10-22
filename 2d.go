@@ -113,7 +113,8 @@ func (ctx *Ctx) drawTextInput(inputId, originX, originY, inputWidth, height int,
 
 func (ctx *Ctx) drawCommentBox(inputId, originX, originY int) g143.Rect {
 	ctx.ggCtx.SetColor(colorful.WarmColor())
-	ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), 80, 40)
+	// ctx.ggCtx.DrawRectangle(float64(originX), float64(originY), 80, 40)
+	ctx.ggCtx.DrawCircle(float64(originX)+20, float64(originY)+20, 30)
 	ctx.ggCtx.Fill()
 
 	cBRect := g143.Rect{Width: 80, Height: 40, OriginX: originX, OriginY: originY}

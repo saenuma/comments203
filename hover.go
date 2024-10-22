@@ -57,7 +57,7 @@ func getHoverCB(state map[int]g143.Rect) glfw.CursorPosCallback {
 		ggCtx.DrawImage(invertedPiece, widgetRS.OriginX, widgetRS.OriginY)
 
 		// show comments
-		if widgetCode > 1000 && widgetCode < 2000 {
+		if widgetCode > 1000 && widgetCode < 2000 && activeTool != DeleteCommentTool {
 			instrId := widgetCode - 1000 - 1
 			commentObj := comments[instrId]
 			cORect := objCoords[widgetCode]

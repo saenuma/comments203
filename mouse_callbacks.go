@@ -135,13 +135,23 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 
 		} else if activeTool == DeleteCommentTool {
 
+			var tmp []Comment
 			for i, obj := range comments {
 				if g143.InRect(obj.getRect(), xPosInt, yPosInt) {
-					comments = slices.Delete(comments, i, i+1)
+					tmp = slices.Delete(comments, i, i+1)
+					break
 				}
 			}
+			comments = tmp
 
 			drawMainWindow(window)
+			// respond to the mouse
+			window.SetMouseButtonCallback(mouseBtnCallback)
+			// quick hover effect
+			window.SetCursorPosCallback(getHoverCB(objCoords))
+			window.SetKeyCallback(nil)
+			window.SetCharCallback(nil)
+
 		}
 
 	case SaveWorkTool:
