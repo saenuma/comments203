@@ -46,6 +46,10 @@ func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.
 	rootPath, _ := GetRootPath()
 	switch widgetCode {
 	case SelectImageTool:
+		if currentWorkingImagePath != "" {
+			return
+		}
+		
 		imagePath := PickImageFile()
 		if strings.TrimSpace(imagePath) == "" {
 			return
