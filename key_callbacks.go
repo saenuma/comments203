@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -8,7 +9,14 @@ import (
 
 func CDCharCallback(window *glfw.Window, char rune) {
 	wWidth, wHeight := window.GetSize()
-	enteredTxt += string(char)
+	tmp := enteredTxt + string(char)
+	tmpParts := strings.Split(tmp, "\n")
+	if len(tmpParts[len(tmpParts)-1]) > 45 {
+		enteredTxt = enteredTxt + "\n" + string(char)
+	} else {
+		enteredTxt = tmp
+	}
+
 
 	sIRect := CDObjCoords[CD_CommentInput]
 	theCtx := Continue2dCtx(currentWindowFrame, &CDObjCoords)
@@ -23,14 +31,17 @@ func CDCharCallback(window *glfw.Window, char rune) {
 }
 
 func CDKeyCallback(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+	val := enteredTxt
+	if key == glfw.KeyBackspace && len(enteredTxt) != 0 {
+		enteredTxt = val[:len(val)-1]
+	}	
+
 	if action != glfw.Release {
 		return
 	}
 	wWidth, wHeight := window.GetSize()
-	val := enteredTxt
-	if key == glfw.KeyBackspace && len(enteredTxt) != 0 {
-		enteredTxt = val[:len(val)-1]
-	} else if key == glfw.KeyEnter {
+
+	if key == glfw.KeyEnter {
 		enteredTxt = val + "\n"
 	}
 
