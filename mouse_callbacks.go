@@ -13,8 +13,6 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-
-
 func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
 	if action != glfw.Release {
 		return
