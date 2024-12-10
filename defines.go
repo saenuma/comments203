@@ -23,6 +23,7 @@ const (
 	CD_AddBtn = 107
 	CD_CloseBtn = 108
 	CD_CommentInput = 109
+	CD_PasteBtn = 110
 )
 
 type CircleSpec struct {

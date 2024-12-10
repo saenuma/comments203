@@ -39,7 +39,9 @@ func drawCommentDialog(window *glfw.Window, currentFrame image.Image) {
 	}
 	theCtx.ggCtx.DrawString(str1, float64(aFLX), float64(aFLY)+FontSize)
 
-	addBtnOriginX := dialogWidth + dialogOriginX - 160
+	pasteBtnOriginX := dialogWidth + dialogOriginX - 240
+	pasteBtnRect := theCtx.drawButtonB(CD_PasteBtn, pasteBtnOriginX, dialogOriginY+20, "Paste", "#fff", "#AA6DAD")
+	addBtnOriginX, _ := nextHorizontalCoords(pasteBtnRect, 10)
 	addBtnRect := theCtx.drawButtonB(CD_AddBtn, addBtnOriginX, dialogOriginY+20, "Add", "#fff", "#56845A")
 	closeBtnX, _ := nextHorizontalCoords(addBtnRect, 10)
 	theCtx.drawButtonB(CD_CloseBtn, closeBtnX, addBtnRect.OriginY, "Close", "#fff", "#B75F5F")
