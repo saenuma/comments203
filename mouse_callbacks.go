@@ -236,29 +236,38 @@ func CDMouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glf
 		activeX, activeY = -1, -1
 
 	case CD_PasteBtn:
-		toPasteStr := glfw.GetClipboardString()
-		if len(strings.TrimSpace(toPasteStr)) == 0 {
-			return
+		theCtx := Continue2dCtx(currentWindowFrame, &CDObjCoords)	
+		ctrlState := window.GetKey(glfw.KeyLeftControl)
+
+		if ctrlState == glfw.Release {
+			toPasteStr := glfw.GetClipboardString()
+			if len(strings.TrimSpace(toPasteStr)) == 0 {
+				return
+			}
+
+			toPasteStr = strings.ReplaceAll(toPasteStr, "\n", " ")
+			lines := make([]string, 0)
+			toPasteStrLen := len(toPasteStr)
+			rem := math.Mod(float64(toPasteStrLen), float64(45))
+			for i := range(toPasteStrLen/45) {
+				tmp := toPasteStr[(i*45): (i+1)*45]
+				lines = append(lines, tmp)
+			}
+
+			if int(rem) != 0 {
+				lines = append(lines, toPasteStr[toPasteStrLen-int(rem):])
+			}
+
+			enteredTxt = strings.Join(lines, "\n")
+
+			sIRect := CDObjCoords[CD_CommentInput]
+			theCtx.drawTextInput(CD_CommentInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, sIRect.Height, enteredTxt)
+
+		} else if ctrlState == glfw.Press {
+			enteredTxt = ""
+			sIRect := CDObjCoords[CD_CommentInput]
+			theCtx.drawTextInput(CD_CommentInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, sIRect.Height, enteredTxt)			
 		}
-
-		toPasteStr = strings.ReplaceAll(toPasteStr, "\n", " ")
-		lines := make([]string, 0)
-		toPasteStrLen := len(toPasteStr)
-		rem := math.Mod(float64(toPasteStrLen), float64(45))
-		for i := range(toPasteStrLen/45) {
-			tmp := toPasteStr[(i*45): (i+1)*45]
-			lines = append(lines, tmp)
-		}
-
-		if int(rem) != 0 {
-			lines = append(lines, toPasteStr[toPasteStrLen-int(rem):])
-		}
-
-		enteredTxt = strings.Join(lines, "\n")
-
-		sIRect := CDObjCoords[CD_CommentInput]
-		theCtx := Continue2dCtx(currentWindowFrame, &CDObjCoords)
-		theCtx.drawTextInput(CD_CommentInput, sIRect.OriginX, sIRect.OriginY, sIRect.Width, sIRect.Height, enteredTxt)
 
 		// send the frame to glfw window
 		g143.DrawImage(wWidth, wHeight, theCtx.ggCtx.Image(), theCtx.windowRect())
