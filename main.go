@@ -6,7 +6,7 @@ import (
 	"fmt"
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/disintegration/imaging"
+	"github.com/kovidgoyal/imaging"
 	"image/draw"
 	"image/color"
 	"image"

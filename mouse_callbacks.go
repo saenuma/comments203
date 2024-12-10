@@ -11,7 +11,7 @@ import (
 	g143 "github.com/bankole7782/graphics143"
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/fogleman/gg"
-	"github.com/disintegration/imaging"
+	"github.com/kovidgoyal/imaging"
 )
 
 func mouseBtnCallback(window *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
