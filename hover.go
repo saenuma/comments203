@@ -61,8 +61,10 @@ func getHoverCB(state map[int]g143.Rect) glfw.CursorPosCallback {
 			instrId := widgetCode - 1000 - 1
 			commentObj := comments[instrId]
 			cORect := objCoords[widgetCode]
+			strs := strings.Split(commentObj.Comment, "\n")
+			height := len(strs)*30 + 50
 			ggCtx.SetHexColor("#888")
-			ggCtx.DrawRoundedRectangle(float64(cORect.OriginX)+10, float64(cORect.OriginY)+10, 460, 300, 10)
+			ggCtx.DrawRoundedRectangle(float64(cORect.OriginX)+10, float64(cORect.OriginY)+10, 460, float64(height), 10)
 			ggCtx.Fill()
 
 			// load font
@@ -79,7 +81,6 @@ func getHoverCB(state map[int]g143.Rect) glfw.CursorPosCallback {
 			ggCtx.DrawRoundedRectangle(float64(cORect.OriginX)+30, float64(cORect.OriginY)+30+FontSize, 430, 1, 1)
 			ggCtx.Fill()
 
-			strs := strings.Split(commentObj.Comment, "\n")
 			currentY := cHLY + 25
 			for _, str := range strs {
 				ggCtx.SetHexColor("#fff")
